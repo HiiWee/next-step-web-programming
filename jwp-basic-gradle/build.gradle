@@ -5,8 +5,11 @@
 plugins {
     id 'java-library'
     id 'application'
+    id 'war'
 }
-
+war {
+    archiveBaseName = 'jwp-basic-gradle.war'
+}
 mainClassName = 'webserver.WebServerLauncher'
 
 repositories {
