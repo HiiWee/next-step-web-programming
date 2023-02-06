@@ -8,7 +8,8 @@ plugins {
     id 'war'
 }
 war {
-    archiveBaseName = 'jwp-basic-gradle.war'
+    archiveVersion = ''
+    archiveBaseName = 'jwp-basic-gradle'
 }
 mainClassName = 'webserver.WebServerLauncher'
 
