@@ -11,6 +11,8 @@ war {
     archiveVersion = ''
     archiveBaseName = 'jwp-basic-gradle'
 }
+
+webAppDirName = 'webapp'
 mainClassName = 'webserver.WebServerLauncher'
 
 repositories {
