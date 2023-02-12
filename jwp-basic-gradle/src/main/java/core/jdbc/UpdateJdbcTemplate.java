@@ -1,8 +1,5 @@
 package core.jdbc;
 
-import static next.dao.UserDao.createQueryForUpdate;
-import static next.dao.UserDao.setValueForUpdate;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -29,5 +26,16 @@ public class UpdateJdbcTemplate {
         } catch (SQLException exception) {
             throw new DataAccessException(exception.getMessage());
         }
+    }
+
+    private static String createQueryForUpdate() {
+        return "UPDATE USERS SET password = ?, name = ?, email = ? WHERE userId = ?";
+    }
+
+    private static void setValueForUpdate(final User updatedUser, final PreparedStatement pstmt) throws SQLException {
+        pstmt.setString(1, updatedUser.getPassword());
+        pstmt.setString(2, updatedUser.getName());
+        pstmt.setString(3, updatedUser.getEmail());
+        pstmt.setString(4, updatedUser.getUserId());
     }
 }

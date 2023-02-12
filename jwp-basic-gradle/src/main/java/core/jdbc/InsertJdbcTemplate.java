@@ -1,8 +1,5 @@
 package core.jdbc;
 
-import static next.dao.UserDao.createQueryForInsert;
-import static next.dao.UserDao.setValueForInsert;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -31,5 +28,16 @@ public class InsertJdbcTemplate {
         } catch (SQLException exception) {
             throw new DataAccessException(exception.getMessage());
         }
+    }
+
+    private static String createQueryForInsert() {
+        return "INSERT INTO USERS VALUES (?, ?, ?, ?)";
+    }
+
+    private static void setValueForInsert(final User user, final PreparedStatement pstmt) throws SQLException {
+        pstmt.setString(1, user.getUserId());
+        pstmt.setString(2, user.getPassword());
+        pstmt.setString(3, user.getName());
+        pstmt.setString(4, user.getEmail());
     }
 }

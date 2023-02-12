@@ -21,17 +21,6 @@ public class UserDao {
         insertJdbcTemplate.insert(user);
     }
 
-    public static String createQueryForInsert() {
-        return "INSERT INTO USERS VALUES (?, ?, ?, ?)";
-    }
-
-    public static void setValueForInsert(final User user, final PreparedStatement pstmt) throws SQLException {
-        pstmt.setString(1, user.getUserId());
-        pstmt.setString(2, user.getPassword());
-        pstmt.setString(3, user.getName());
-        pstmt.setString(4, user.getEmail());
-    }
-
     public User findByUserId(String userId)  {
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -100,16 +89,5 @@ public class UserDao {
 
     public void update(final User user) {
         updateJdbcTemplate.update(user);
-    }
-
-    public static String createQueryForUpdate() {
-        return "UPDATE USERS SET password = ?, name = ?, email = ? WHERE userId = ?";
-    }
-
-    public static void setValueForUpdate(final User updatedUser, final PreparedStatement pstmt) throws SQLException {
-        pstmt.setString(1, updatedUser.getPassword());
-        pstmt.setString(2, updatedUser.getName());
-        pstmt.setString(3, updatedUser.getEmail());
-        pstmt.setString(4, updatedUser.getUserId());
     }
 }
