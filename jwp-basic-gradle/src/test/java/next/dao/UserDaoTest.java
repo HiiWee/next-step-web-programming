@@ -24,6 +24,16 @@ public class UserDaoTest {
     }
 
     @Test
+    void update() {
+        // when
+        userDao.update(new User("userId", "password", "hoseok", "javajigi@email.com"));
+        User user = userDao.findByUserId("userId");
+
+        // then
+        assertThat(user.getName()).isEqualTo("hoseok");
+    }
+
+    @Test
     void findByUserId() {
         // given
         // when
@@ -44,5 +54,4 @@ public class UserDaoTest {
             assertThat(users.contains(new User("userId", "password", "name", "javajigi@email.com"))).isTrue();
         });
     }
-
 }
