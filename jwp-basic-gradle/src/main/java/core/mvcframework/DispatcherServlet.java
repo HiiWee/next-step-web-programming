@@ -15,7 +15,7 @@ public class DispatcherServlet extends HttpServlet {
     private static final int REDIRECT_URI = 1;
 
     private final RequestMapping requestMapping = new RequestMapping();
-    private String prefixViewPath = "/WEB-INF/views/";
+    private String prefixViewPath = "/";
     private String suffixViewPath = ".jsp";
     private HttpServletRequest request;
     private HttpServletResponse response;
