@@ -19,6 +19,10 @@ public class JdbcTemplate {
         }
     }
 
+    public void update(final String query, final Object... values) {
+        update(query, createPreparedStatementSetter(values));
+    }
+
     public <T> List<T> query(
             final String query,
             final PreparedStatementSetter preparedStatementSetter,
