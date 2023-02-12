@@ -25,12 +25,7 @@ public abstract class SelectJdbcTemplate {
             List<User> users = new ArrayList<>();
             User user;
             while (rs.next()) {
-                user = new User(
-                        rs.getString("userId"),
-                        rs.getString("password"),
-                        rs.getString("name"),
-                        rs.getString("email")
-                );
+                user = mapRow(rs);
                 users.add(user);
             }
             if (rs != null) {
@@ -48,6 +43,7 @@ public abstract class SelectJdbcTemplate {
         }
     }
 
+
     public User queryForObject() {
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -62,12 +58,7 @@ public abstract class SelectJdbcTemplate {
 
             User user = null;
             if (rs.next()) {
-                user = new User(
-                        rs.getString("userId"),
-                        rs.getString("password"),
-                        rs.getString("name"),
-                        rs.getString("email")
-                );
+                user = mapRow(rs);
             }
             if (rs != null) {
                 rs.close();
@@ -88,4 +79,6 @@ public abstract class SelectJdbcTemplate {
     protected abstract void setValue(final PreparedStatement preparedStatement) throws SQLException;
 
     protected abstract String createQuery();
+
+    protected abstract User mapRow(final ResultSet rs) throws SQLException;
 }

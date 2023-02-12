@@ -3,6 +3,7 @@ package next.dao;
 import core.jdbc.JdbcTemplate;
 import core.jdbc.SelectJdbcTemplate;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import next.model.User;
@@ -28,36 +29,6 @@ public class UserDao {
         insertJdbcTemplate.insert();
     }
 
-    public User findByUserId(String userId) {
-        SelectJdbcTemplate selectJdbcTemplate = new SelectJdbcTemplate() {
-            @Override
-            protected String createQuery() {
-                return "SELECT userId, password, name, email FROM USERS WHERE userId = ?";
-            }
-
-            @Override
-            protected void setValue(final PreparedStatement preparedStatement) throws SQLException {
-                preparedStatement.setString(1, userId);
-            }
-        };
-        return selectJdbcTemplate.queryForObject();
-    }
-
-    public List<User> findAll() {
-        SelectJdbcTemplate selectJdbcTemplate = new SelectJdbcTemplate() {
-            @Override
-            protected String createQuery() {
-                return "SELECT userId, password, name, email FROM USERS";
-            }
-
-            @Override
-            protected void setValue(final PreparedStatement preparedStatement) throws SQLException {
-
-            }
-        };
-        return selectJdbcTemplate.query();
-    }
-
     public void update(final User user) {
         JdbcTemplate updateJdbcTemplate = new JdbcTemplate() {
             @Override
@@ -75,5 +46,55 @@ public class UserDao {
             }
         };
         updateJdbcTemplate.update();
+    }
+
+    public User findByUserId(String userId) {
+        SelectJdbcTemplate selectJdbcTemplate = new SelectJdbcTemplate() {
+            @Override
+            protected String createQuery() {
+                return "SELECT userId, password, name, email FROM USERS WHERE userId = ?";
+            }
+
+            @Override
+            protected void setValue(final PreparedStatement preparedStatement) throws SQLException {
+                preparedStatement.setString(1, userId);
+            }
+
+            @Override
+            protected User mapRow(final ResultSet rs) throws SQLException {
+                return new User(
+                        rs.getString("userId"),
+                        rs.getString("password"),
+                        rs.getString("name"),
+                        rs.getString("email")
+                );
+            }
+        };
+        return selectJdbcTemplate.queryForObject();
+    }
+
+    public List<User> findAll() {
+        SelectJdbcTemplate selectJdbcTemplate = new SelectJdbcTemplate() {
+            @Override
+            protected String createQuery() {
+                return "SELECT userId, password, name, email FROM USERS";
+            }
+
+            @Override
+            protected void setValue(final PreparedStatement preparedStatement) throws SQLException {
+
+            }
+
+            @Override
+            protected User mapRow(final ResultSet rs) throws SQLException {
+                return new User(
+                        rs.getString("userId"),
+                        rs.getString("password"),
+                        rs.getString("name"),
+                        rs.getString("email")
+                );
+            }
+        };
+        return selectJdbcTemplate.query();
     }
 }
