@@ -1,8 +1,7 @@
 package next.dao;
 
 import core.jdbc.ConnectionManager;
-import core.jdbc.InsertJdbcTemplate;
-import core.jdbc.UpdateJdbcTemplate;
+import core.jdbc.JdbcTemplate;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,14 +15,14 @@ import next.model.User;
 public class UserDao {
 
     public void insert(User user) {
-        InsertJdbcTemplate insertJdbcTemplate = new InsertJdbcTemplate() {
+        JdbcTemplate insertJdbcTemplate = new JdbcTemplate() {
             @Override
-            protected String createQueryForInsert() {
+            protected String createQuery() {
                 return "INSERT INTO USERS VALUES (?, ?, ?, ?)";
             }
 
             @Override
-            protected void setValueForInsert(final User user, final PreparedStatement preparedStatement)
+            protected void setValue(final User user, final PreparedStatement preparedStatement)
                     throws SQLException {
                 preparedStatement.setString(1, user.getUserId());
                 preparedStatement.setString(2, user.getPassword());
@@ -101,14 +100,14 @@ public class UserDao {
     }
 
     public void update(final User user) {
-        UpdateJdbcTemplate updateJdbcTemplate = new UpdateJdbcTemplate() {
+        JdbcTemplate updateJdbcTemplate = new JdbcTemplate() {
             @Override
-            protected String createQueryForUpdate() {
+            protected String createQuery() {
                 return "UPDATE USERS SET password = ?, name = ?, email = ? WHERE userId = ?";
             }
 
             @Override
-            protected void setValueForUpdate(final User user, final PreparedStatement preparedStatement)
+            protected void setValue(final User user, final PreparedStatement preparedStatement)
                     throws SQLException {
                 preparedStatement.setString(1, user.getPassword());
                 preparedStatement.setString(2, user.getName());
