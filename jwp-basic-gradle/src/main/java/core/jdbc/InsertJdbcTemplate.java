@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import next.exception.DataAccessException;
 import next.model.User;
 
-public class InsertJdbcTemplate {
+public abstract class InsertJdbcTemplate {
 
     public void insert(final User user) {
         Connection con = null;
@@ -30,14 +30,7 @@ public class InsertJdbcTemplate {
         }
     }
 
-    private static String createQueryForInsert() {
-        return "INSERT INTO USERS VALUES (?, ?, ?, ?)";
-    }
+    protected abstract String createQueryForInsert();
 
-    private static void setValueForInsert(final User user, final PreparedStatement pstmt) throws SQLException {
-        pstmt.setString(1, user.getUserId());
-        pstmt.setString(2, user.getPassword());
-        pstmt.setString(3, user.getName());
-        pstmt.setString(4, user.getEmail());
-    }
+    protected abstract void setValueForInsert(final User user, final PreparedStatement preparedStatement) throws SQLException;
 }

@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import next.exception.DataAccessException;
 import next.model.User;
 
-public class UpdateJdbcTemplate {
+public abstract class UpdateJdbcTemplate {
 
     public void update(final User user) {
         Connection con = null;
@@ -28,14 +28,7 @@ public class UpdateJdbcTemplate {
         }
     }
 
-    private static String createQueryForUpdate() {
-        return "UPDATE USERS SET password = ?, name = ?, email = ? WHERE userId = ?";
-    }
+    protected abstract String createQueryForUpdate();
 
-    private static void setValueForUpdate(final User updatedUser, final PreparedStatement pstmt) throws SQLException {
-        pstmt.setString(1, updatedUser.getPassword());
-        pstmt.setString(2, updatedUser.getName());
-        pstmt.setString(3, updatedUser.getEmail());
-        pstmt.setString(4, updatedUser.getUserId());
-    }
+    protected abstract void setValueForUpdate(final User user, final PreparedStatement preparedStatement) throws SQLException;
 }

@@ -14,14 +14,27 @@ import next.exception.DataAccessException;
 import next.model.User;
 
 public class UserDao {
-    private final InsertJdbcTemplate insertJdbcTemplate = new InsertJdbcTemplate();
-    private final UpdateJdbcTemplate updateJdbcTemplate = new UpdateJdbcTemplate();
 
     public void insert(User user) {
+        InsertJdbcTemplate insertJdbcTemplate = new InsertJdbcTemplate() {
+            @Override
+            protected String createQueryForInsert() {
+                return "INSERT INTO USERS VALUES (?, ?, ?, ?)";
+            }
+
+            @Override
+            protected void setValueForInsert(final User user, final PreparedStatement preparedStatement)
+                    throws SQLException {
+                preparedStatement.setString(1, user.getUserId());
+                preparedStatement.setString(2, user.getPassword());
+                preparedStatement.setString(3, user.getName());
+                preparedStatement.setString(4, user.getEmail());
+            }
+        };
         insertJdbcTemplate.insert(user);
     }
 
-    public User findByUserId(String userId)  {
+    public User findByUserId(String userId) {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -54,7 +67,7 @@ public class UserDao {
         }
     }
 
-    public List<User> findAll()  {
+    public List<User> findAll() {
         Connection con = null;
         ResultSet rs = null;
         try {
@@ -88,6 +101,21 @@ public class UserDao {
     }
 
     public void update(final User user) {
+        UpdateJdbcTemplate updateJdbcTemplate = new UpdateJdbcTemplate() {
+            @Override
+            protected String createQueryForUpdate() {
+                return "UPDATE USERS SET password = ?, name = ?, email = ? WHERE userId = ?";
+            }
+
+            @Override
+            protected void setValueForUpdate(final User user, final PreparedStatement preparedStatement)
+                    throws SQLException {
+                preparedStatement.setString(1, user.getPassword());
+                preparedStatement.setString(2, user.getName());
+                preparedStatement.setString(3, user.getEmail());
+                preparedStatement.setString(4, user.getUserId());
+            }
+        };
         updateJdbcTemplate.update(user);
     }
 }
