@@ -17,12 +17,9 @@ public class UserDao {
         PreparedStatement pstmt = null;
         try {
             con = ConnectionManager.getConnection();
-            String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
+            String sql = createQueryForInsert();
             pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, user.getUserId());
-            pstmt.setString(2, user.getPassword());
-            pstmt.setString(3, user.getName());
-            pstmt.setString(4, user.getEmail());
+            setValueForInsert(user, pstmt);
 
             pstmt.executeUpdate();
             if (pstmt != null) {
@@ -35,6 +32,17 @@ public class UserDao {
         } catch (SQLException exception) {
             throw new DataAccessException(exception.getMessage());
         }
+    }
+
+    private static String createQueryForInsert() {
+        return "INSERT INTO USERS VALUES (?, ?, ?, ?)";
+    }
+
+    private static void setValueForInsert(final User user, final PreparedStatement pstmt) throws SQLException {
+        pstmt.setString(1, user.getUserId());
+        pstmt.setString(2, user.getPassword());
+        pstmt.setString(3, user.getName());
+        pstmt.setString(4, user.getEmail());
     }
 
     public User findByUserId(String userId)  {
@@ -108,12 +116,9 @@ public class UserDao {
         PreparedStatement pstmt = null;
         try {
             con = ConnectionManager.getConnection();
-            String sql = "UPDATE USERS SET password = ?, name = ?, email = ? WHERE userId = ?";
+            String sql = createQueryForUpdate();
             pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, updatedUser.getPassword());
-            pstmt.setString(2, updatedUser.getName());
-            pstmt.setString(3, updatedUser.getEmail());
-            pstmt.setString(4, updatedUser.getUserId());
+            setValueForUpdate(updatedUser, pstmt);
             int result = pstmt.executeUpdate();
             if (pstmt != null) {
                 pstmt.close();
@@ -125,5 +130,16 @@ public class UserDao {
         } catch (SQLException exception) {
             throw new DataAccessException(exception.getMessage());
         }
+    }
+
+    private static String createQueryForUpdate() {
+        return "UPDATE USERS SET password = ?, name = ?, email = ? WHERE userId = ?";
+    }
+
+    private static void setValueForUpdate(final User updatedUser, final PreparedStatement pstmt) throws SQLException {
+        pstmt.setString(1, updatedUser.getPassword());
+        pstmt.setString(2, updatedUser.getName());
+        pstmt.setString(3, updatedUser.getEmail());
+        pstmt.setString(4, updatedUser.getUserId());
     }
 }
