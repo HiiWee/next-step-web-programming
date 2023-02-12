@@ -54,7 +54,7 @@ public abstract class JdbcTemplate {
     }
 
 
-    public List query(final RowMapper rowMapper) {
+    public <T> List<T> query(final RowMapper<T> rowMapper) {
         Connection con = null;
         ResultSet rs = null;
         try {
@@ -64,8 +64,8 @@ public abstract class JdbcTemplate {
 
             rs = st.executeQuery(sql);
 
-            List<Object> results = new ArrayList<>();
-            Object result;
+            List<T> results = new ArrayList<>();
+            T result;
             while (rs.next()) {
                 result = rowMapper.mapRow(rs);
                 results.add(result);
@@ -86,7 +86,7 @@ public abstract class JdbcTemplate {
     }
 
 
-    public Object queryForObject(final PreparedStatementSetter preparedStatementSetter, final RowMapper rowMapper) {
+    public <T> T queryForObject(final PreparedStatementSetter preparedStatementSetter, final RowMapper<T> rowMapper) {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -98,7 +98,7 @@ public abstract class JdbcTemplate {
 
             rs = pstmt.executeQuery();
 
-            Object result = null;
+            T result = null;
             if (rs.next()) {
                 result = rowMapper.mapRow(rs);
             }

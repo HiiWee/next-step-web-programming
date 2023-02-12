@@ -45,7 +45,7 @@ public class UserDao {
                 return "SELECT userId, password, name, email FROM USERS WHERE userId = ?";
             }
         };
-        return (User) selectJdbcTemplate.queryForObject(
+        return selectJdbcTemplate.queryForObject(
                 preparedStatement -> preparedStatement.setString(1, userId),
                 resultSet -> new User(
                         resultSet.getString("userId"),
@@ -62,7 +62,7 @@ public class UserDao {
                 return "SELECT userId, password, name, email FROM USERS";
             }
         };
-        return (List<User>) selectJdbcTemplate.query(resultSet ->
+        return selectJdbcTemplate.query(resultSet ->
                 new User(
                         resultSet.getString("userId"),
                         resultSet.getString("password"),
