@@ -9,14 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import next.exception.DataAccessException;
 
-public abstract class JdbcTemplate {
-    public void insert(final PreparedStatementSetter preparedStatementSetter) {
+public class JdbcTemplate {
+    public void insert(final String query, final PreparedStatementSetter preparedStatementSetter) {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
             con = ConnectionManager.getConnection();
-            String sql = createQuery();
-            pstmt = con.prepareStatement(sql);
+            pstmt = con.prepareStatement(query);
             preparedStatementSetter.setValue(pstmt);
 
             pstmt.executeUpdate();
@@ -33,13 +32,12 @@ public abstract class JdbcTemplate {
     }
 
 
-    public void update(final PreparedStatementSetter preparedStatementSetter) {
+    public void update(final String query, final PreparedStatementSetter preparedStatementSetter) {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
             con = ConnectionManager.getConnection();
-            String sql = createQuery();
-            pstmt = con.prepareStatement(sql);
+            pstmt = con.prepareStatement(query);
             preparedStatementSetter.setValue(pstmt);
             pstmt.executeUpdate();
             if (pstmt != null) {
@@ -54,15 +52,14 @@ public abstract class JdbcTemplate {
     }
 
 
-    public <T> List<T> query(final RowMapper<T> rowMapper) {
+    public <T> List<T> query(final String query, final RowMapper<T> rowMapper) {
         Connection con = null;
         ResultSet rs = null;
         try {
             con = ConnectionManager.getConnection();
-            String sql = createQuery();
             Statement st = con.createStatement();
 
-            rs = st.executeQuery(sql);
+            rs = st.executeQuery(query);
 
             List<T> results = new ArrayList<>();
             T result;
@@ -86,14 +83,13 @@ public abstract class JdbcTemplate {
     }
 
 
-    public <T> T queryForObject(final PreparedStatementSetter preparedStatementSetter, final RowMapper<T> rowMapper) {
+    public <T> T queryForObject(final String query, final PreparedStatementSetter preparedStatementSetter, final RowMapper<T> rowMapper) {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
             con = ConnectionManager.getConnection();
-            String sql = createQuery();
-            pstmt = con.prepareStatement(sql);
+            pstmt = con.prepareStatement(query);
             preparedStatementSetter.setValue(pstmt);
 
             rs = pstmt.executeQuery();
@@ -117,7 +113,4 @@ public abstract class JdbcTemplate {
             throw new DataAccessException(exception.getMessage());
         }
     }
-
-    protected abstract String createQuery();
-
 }
