@@ -4,17 +4,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import next.exception.DataAccessException;
-import next.model.User;
 
 public abstract class JdbcTemplate {
-    public void insert(final User user) {
+    public void insert() {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
             con = ConnectionManager.getConnection();
             String sql = createQuery();
             pstmt = con.prepareStatement(sql);
-            setValue(user, pstmt);
+            setValue(pstmt);
 
             pstmt.executeUpdate();
             if (pstmt != null) {
@@ -30,14 +29,14 @@ public abstract class JdbcTemplate {
     }
 
 
-    public void update(final User user) {
+    public void update() {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
             con = ConnectionManager.getConnection();
             String sql = createQuery();
             pstmt = con.prepareStatement(sql);
-            setValue(user, pstmt);
+            setValue(pstmt);
             pstmt.executeUpdate();
             if (pstmt != null) {
                 pstmt.close();
@@ -52,6 +51,5 @@ public abstract class JdbcTemplate {
 
     protected abstract String createQuery();
 
-    protected abstract void setValue(final User user, final PreparedStatement preparedStatement)
-            throws SQLException;
+    protected abstract void setValue(final PreparedStatement preparedStatement) throws SQLException;
 }

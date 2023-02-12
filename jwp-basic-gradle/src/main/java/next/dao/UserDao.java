@@ -22,7 +22,7 @@ public class UserDao {
             }
 
             @Override
-            protected void setValue(final User user, final PreparedStatement preparedStatement)
+            protected void setValue(final PreparedStatement preparedStatement)
                     throws SQLException {
                 preparedStatement.setString(1, user.getUserId());
                 preparedStatement.setString(2, user.getPassword());
@@ -30,7 +30,7 @@ public class UserDao {
                 preparedStatement.setString(4, user.getEmail());
             }
         };
-        insertJdbcTemplate.insert(user);
+        insertJdbcTemplate.insert();
     }
 
     public User findByUserId(String userId) {
@@ -47,8 +47,12 @@ public class UserDao {
 
             User user = null;
             if (rs.next()) {
-                user = new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"),
-                        rs.getString("email"));
+                user = new User(
+                        rs.getString("userId"),
+                        rs.getString("password"),
+                        rs.getString("name"),
+                        rs.getString("email")
+                );
             }
             if (rs != null) {
                 rs.close();
@@ -107,7 +111,7 @@ public class UserDao {
             }
 
             @Override
-            protected void setValue(final User user, final PreparedStatement preparedStatement)
+            protected void setValue(final PreparedStatement preparedStatement)
                     throws SQLException {
                 preparedStatement.setString(1, user.getPassword());
                 preparedStatement.setString(2, user.getName());
@@ -115,6 +119,6 @@ public class UserDao {
                 preparedStatement.setString(4, user.getUserId());
             }
         };
-        updateJdbcTemplate.update(user);
+        updateJdbcTemplate.update();
     }
 }
