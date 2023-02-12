@@ -11,106 +11,60 @@ import next.exception.DataAccessException;
 
 public class JdbcTemplate {
     public void insert(final String query, final PreparedStatementSetter preparedStatementSetter) {
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        try {
-            con = ConnectionManager.getConnection();
-            pstmt = con.prepareStatement(query);
-            preparedStatementSetter.setValue(pstmt);
-
-            pstmt.executeUpdate();
-            if (pstmt != null) {
-                pstmt.close();
-            }
-
-            if (con != null) {
-                con.close();
-            }
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatementSetter.setValue(preparedStatement);
+            preparedStatement.executeUpdate();
         } catch (SQLException exception) {
-            throw new DataAccessException(exception.getMessage());
+            throw new DataAccessException(exception);
         }
     }
 
 
     public void update(final String query, final PreparedStatementSetter preparedStatementSetter) {
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        try {
-            con = ConnectionManager.getConnection();
-            pstmt = con.prepareStatement(query);
-            preparedStatementSetter.setValue(pstmt);
-            pstmt.executeUpdate();
-            if (pstmt != null) {
-                pstmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatementSetter.setValue(preparedStatement);
+            preparedStatement.executeUpdate();
         } catch (SQLException exception) {
-            throw new DataAccessException(exception.getMessage());
+            throw new DataAccessException(exception);
         }
     }
 
 
     public <T> List<T> query(final String query, final RowMapper<T> rowMapper) {
-        Connection con = null;
-        ResultSet rs = null;
-        try {
-            con = ConnectionManager.getConnection();
-            Statement st = con.createStatement();
-
-            rs = st.executeQuery(query);
+        try (Connection connection = ConnectionManager.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
 
             List<T> results = new ArrayList<>();
             T result;
-            while (rs.next()) {
-                result = rowMapper.mapRow(rs);
+            while (resultSet.next()) {
+                result = rowMapper.mapRow(resultSet);
                 results.add(result);
-            }
-            if (rs != null) {
-                rs.close();
-            }
-            if (st != null) {
-                st.close();
-            }
-            if (con != null) {
-                con.close();
             }
             return results;
         } catch (SQLException exception) {
-            throw new DataAccessException(exception.getMessage());
+            throw new DataAccessException(exception);
         }
     }
 
 
-    public <T> T queryForObject(final String query, final PreparedStatementSetter preparedStatementSetter, final RowMapper<T> rowMapper) {
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            con = ConnectionManager.getConnection();
-            pstmt = con.prepareStatement(query);
-            preparedStatementSetter.setValue(pstmt);
+    public <T> T queryForObject(final String query, final PreparedStatementSetter preparedStatementSetter,
+                                final RowMapper<T> rowMapper) {
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            rs = pstmt.executeQuery();
-
+            preparedStatementSetter.setValue(preparedStatement);
+            ResultSet resultSet = preparedStatement.executeQuery();
             T result = null;
-            if (rs.next()) {
-                result = rowMapper.mapRow(rs);
+            if (resultSet.next()) {
+                result = rowMapper.mapRow(resultSet);
             }
-            if (rs != null) {
-                rs.close();
-            }
-            if (pstmt != null) {
-                pstmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
-
+            resultSet.close();
             return result;
         } catch (SQLException exception) {
-            throw new DataAccessException(exception.getMessage());
+            throw new DataAccessException(exception);
         }
     }
 }
