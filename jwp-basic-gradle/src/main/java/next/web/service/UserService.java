@@ -13,7 +13,7 @@ public class UserService {
     private final UserDao userDao = new UserDao();
 
     public void updateUserInformation(final User updatedUser)  {
-        userDao.updateUser(updatedUser);
+        userDao.update(updatedUser);
     }
 
     public User loginUser(final String userId, final String password) {
