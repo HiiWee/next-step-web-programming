@@ -51,7 +51,7 @@ public class UserDaoTest {
         // then
         Assertions.assertAll(() -> {
             assertThat(users.size()).isEqualTo(2);
-            assertThat(users.contains(new User("userId", "password", "name", "javajigi@email.com"))).isTrue();
+            assertThat(users.contains(new User("admin", "password", "자바지기", "admin@slipp.net"))).isTrue();
         });
     }
 }
