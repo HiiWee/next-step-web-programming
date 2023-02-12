@@ -10,14 +10,14 @@ import java.util.List;
 import next.exception.DataAccessException;
 
 public abstract class JdbcTemplate {
-    public void insert() {
+    public void insert(final PreparedStatementSetter preparedStatementSetter) {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
             con = ConnectionManager.getConnection();
             String sql = createQuery();
             pstmt = con.prepareStatement(sql);
-            setValue(pstmt);
+            preparedStatementSetter.setValue(pstmt);
 
             pstmt.executeUpdate();
             if (pstmt != null) {
@@ -33,14 +33,14 @@ public abstract class JdbcTemplate {
     }
 
 
-    public void update() {
+    public void update(final PreparedStatementSetter preparedStatementSetter) {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
             con = ConnectionManager.getConnection();
             String sql = createQuery();
             pstmt = con.prepareStatement(sql);
-            setValue(pstmt);
+            preparedStatementSetter.setValue(pstmt);
             pstmt.executeUpdate();
             if (pstmt != null) {
                 pstmt.close();
@@ -54,7 +54,7 @@ public abstract class JdbcTemplate {
     }
 
 
-    public List query() {
+    public List query(final RowMapper rowMapper) {
         Connection con = null;
         ResultSet rs = null;
         try {
@@ -67,7 +67,7 @@ public abstract class JdbcTemplate {
             List<Object> results = new ArrayList<>();
             Object result;
             while (rs.next()) {
-                result = mapRow(rs);
+                result = rowMapper.mapRow(rs);
                 results.add(result);
             }
             if (rs != null) {
@@ -86,7 +86,7 @@ public abstract class JdbcTemplate {
     }
 
 
-    public Object queryForObject() {
+    public Object queryForObject(final PreparedStatementSetter preparedStatementSetter, final RowMapper rowMapper) {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -94,13 +94,13 @@ public abstract class JdbcTemplate {
             con = ConnectionManager.getConnection();
             String sql = createQuery();
             pstmt = con.prepareStatement(sql);
-            setValue(pstmt);
+            preparedStatementSetter.setValue(pstmt);
 
             rs = pstmt.executeQuery();
 
             Object result = null;
             if (rs.next()) {
-                result = mapRow(rs);
+                result = rowMapper.mapRow(rs);
             }
             if (rs != null) {
                 rs.close();
@@ -118,9 +118,6 @@ public abstract class JdbcTemplate {
         }
     }
 
-    protected abstract Object mapRow(final ResultSet rs) throws SQLException;
-
     protected abstract String createQuery();
 
-    protected abstract void setValue(final PreparedStatement preparedStatement) throws SQLException;
 }
