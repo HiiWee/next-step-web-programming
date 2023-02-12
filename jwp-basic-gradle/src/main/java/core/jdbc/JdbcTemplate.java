@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import next.exception.DataAccessException;
-import next.model.User;
 
 public abstract class JdbcTemplate {
     public void insert() {
@@ -55,7 +54,7 @@ public abstract class JdbcTemplate {
     }
 
 
-    public List<User> query() {
+    public List query() {
         Connection con = null;
         ResultSet rs = null;
         try {
@@ -65,11 +64,11 @@ public abstract class JdbcTemplate {
 
             rs = st.executeQuery(sql);
 
-            List<User> users = new ArrayList<>();
-            User user;
+            List<Object> results = new ArrayList<>();
+            Object result;
             while (rs.next()) {
-                user = mapRow(rs);
-                users.add(user);
+                result = mapRow(rs);
+                results.add(result);
             }
             if (rs != null) {
                 rs.close();
@@ -80,14 +79,14 @@ public abstract class JdbcTemplate {
             if (con != null) {
                 con.close();
             }
-            return users;
+            return results;
         } catch (SQLException exception) {
             throw new DataAccessException(exception.getMessage());
         }
     }
 
 
-    public User queryForObject() {
+    public Object queryForObject() {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -99,9 +98,9 @@ public abstract class JdbcTemplate {
 
             rs = pstmt.executeQuery();
 
-            User user = null;
+            Object result = null;
             if (rs.next()) {
-                user = mapRow(rs);
+                result = mapRow(rs);
             }
             if (rs != null) {
                 rs.close();
@@ -113,13 +112,13 @@ public abstract class JdbcTemplate {
                 con.close();
             }
 
-            return user;
+            return result;
         } catch (SQLException exception) {
             throw new DataAccessException(exception.getMessage());
         }
     }
 
-    protected abstract User mapRow(final ResultSet rs) throws SQLException;
+    protected abstract Object mapRow(final ResultSet rs) throws SQLException;
 
     protected abstract String createQuery();
 

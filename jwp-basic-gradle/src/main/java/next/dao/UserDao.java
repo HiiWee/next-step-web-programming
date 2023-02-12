@@ -79,7 +79,7 @@ public class UserDao {
                 );
             }
         };
-        return selectJdbcTemplate.queryForObject();
+        return (User) selectJdbcTemplate.queryForObject();
     }
 
     public List<User> findAll() {
@@ -104,6 +104,6 @@ public class UserDao {
                 );
             }
         };
-        return selectJdbcTemplate.query();
+        return (List<User>) selectJdbcTemplate.query();
     }
 }
