@@ -1,7 +1,6 @@
 package next.dao;
 
 import core.jdbc.JdbcTemplate;
-import core.jdbc.SelectJdbcTemplate;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,6 +24,11 @@ public class UserDao {
                 preparedStatement.setString(3, user.getName());
                 preparedStatement.setString(4, user.getEmail());
             }
+
+            @Override
+            protected User mapRow(final ResultSet rs) throws SQLException {
+                return null;
+            }
         };
         insertJdbcTemplate.insert();
     }
@@ -44,12 +48,17 @@ public class UserDao {
                 preparedStatement.setString(3, user.getEmail());
                 preparedStatement.setString(4, user.getUserId());
             }
+
+            @Override
+            protected User mapRow(final ResultSet rs) throws SQLException {
+                return null;
+            }
         };
         updateJdbcTemplate.update();
     }
 
     public User findByUserId(String userId) {
-        SelectJdbcTemplate selectJdbcTemplate = new SelectJdbcTemplate() {
+        JdbcTemplate selectJdbcTemplate = new JdbcTemplate() {
             @Override
             protected String createQuery() {
                 return "SELECT userId, password, name, email FROM USERS WHERE userId = ?";
@@ -74,7 +83,7 @@ public class UserDao {
     }
 
     public List<User> findAll() {
-        SelectJdbcTemplate selectJdbcTemplate = new SelectJdbcTemplate() {
+        JdbcTemplate selectJdbcTemplate = new JdbcTemplate() {
             @Override
             protected String createQuery() {
                 return "SELECT userId, password, name, email FROM USERS";
