@@ -9,16 +9,6 @@ import java.util.List;
 import next.exception.DataAccessException;
 
 public class JdbcTemplate {
-    public void insert(final String query, final PreparedStatementSetter preparedStatementSetter) {
-        try (Connection connection = ConnectionManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatementSetter.setValue(preparedStatement);
-            preparedStatement.executeUpdate();
-        } catch (SQLException exception) {
-            throw new DataAccessException(exception);
-        }
-    }
-
     public void update(final String query, final PreparedStatementSetter preparedStatementSetter) {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -73,9 +63,10 @@ public class JdbcTemplate {
         }
     }
 
-    public <T> T queryForObject(final String query,
-                                final RowMapper<T> rowMapper,
-                                final Object... values) {
+    public <T> T queryForObject(
+            final String query,
+            final RowMapper<T> rowMapper,
+            final Object... values) {
         return queryForObject(query, createPreparedStatementSetter(values), rowMapper);
     }
 

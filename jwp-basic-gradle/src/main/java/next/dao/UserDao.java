@@ -8,7 +8,7 @@ public class UserDao {
     private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
     public void insert(User user) {
-        jdbcTemplate.insert(
+        jdbcTemplate.update(
                 "INSERT INTO USERS VALUES (?, ?, ?, ?)",
                 preparedStatement -> {
                     preparedStatement.setString(1, user.getUserId());
