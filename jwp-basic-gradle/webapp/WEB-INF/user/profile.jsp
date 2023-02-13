@@ -7,12 +7,12 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <jsp:include page="../head.jsp"/>
+    <jsp:include page="../../head.jsp"/>
     <title>SLiPP Java Web Programming</title>
  </head>
 <body>
 
-<jsp:include page="../navigation.jsp"/>
+<jsp:include page="../../navigation.jsp"/>
 
 <div class="container" id="main">
     <div class="col-md-6 col-md-offset-3">
@@ -22,7 +22,7 @@
                 <div class="well well-sm">
                     <div class="media">
                         <a class="thumbnail pull-left" href="#">
-                            <img class="media-object" src="../images/80-text.png">
+                            <img class="media-object" src="../../images/80-text.png">
                         </a>
                         <div class="media-body">
                             <h4 class="media-heading">${user.name}</h4>
@@ -38,6 +38,6 @@
 </div>
 
 <!-- script references -->
-<jsp:include page="../script.jsp"/>
+<jsp:include page="../../script.jsp"/>
 	</body>
 </html>

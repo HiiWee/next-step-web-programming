@@ -7,12 +7,12 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <jsp:include page="../head.jsp"/>
+    <jsp:include page="../../head.jsp"/>
     <title>SLiPP Java Web Programming</title>
 </head>
 <body>
 
-<jsp:include page="../navigation.jsp"/>
+<jsp:include page="../../navigation.jsp"/>
 
 <div class="container" id="main">
     <div class="col-md-10 col-md-offset-1">
@@ -43,6 +43,6 @@
 </div>
 
 <!-- script references -->
-<jsp:include page="../script.jsp"/>
+<jsp:include page="../../script.jsp"/>
 </body>
 </html>
