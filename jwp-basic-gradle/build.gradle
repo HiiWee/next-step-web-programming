@@ -30,9 +30,9 @@ dependencies {
     implementation 'org.reflections:reflections:0.9.10'
     implementation 'ch.qos.logback:logback-classic:1.1.2'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.4.4'
-    compileOnly 'org.apache.tomcat.embed:tomcat-embed-core:8.0.15'
-    compileOnly 'org.apache.tomcat.embed:tomcat-embed-logging-juli:8.0.15'
-    compileOnly 'org.apache.tomcat.embed:tomcat-embed-jasper:8.0.15'
+    implementation 'org.apache.tomcat.embed:tomcat-embed-core:8.0.15'
+    implementation 'org.apache.tomcat.embed:tomcat-embed-logging-juli:8.0.15'
+    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper:8.0.15'
     compileOnly 'javax.servlet:javax.servlet-api:3.1.0'
     testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.22.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
@@ -49,8 +49,8 @@ java.sourceCompatibility = JavaVersion.VERSION_11
 //idea {
 //    module {
 //        inheritOutputDirs = false
-//        outputDir = file('/Users/ihoseok/develop/java/next-step-web-programming/jwp-basic-gradle/webapp/WEB-INF/classes')
-//        testOutputDir = file('/Users/ihoseok/develop/java/next-step-web-programming/jwp-basic-gradle/webapp/WEB-INF/classes')
+//        outputDir = file(project.projectDir.getAbsolutePath() + '/webapp/WEB-INF/classes')
+//        testOutputDir = file(project.projectDir.getAbsolutePath() + '/webapp/WEB-INF/classes')
 //    }
 //}
 
